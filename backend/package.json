@@ -1,0 +1,17 @@
+{
+    "name": "food-recipe-backend-app",
+    "version": "1.0.0",
+    "description": "",
+    "license": "ISC",
+    "author": "palak-banik",
+    "type": "commonjs",
+    "main": "server.js",
+    "scripts": {
+        "dev": "nodemon server.js"
+    },
+    "dependencies": {
+        "dotenv": "^17.4.2",
+        "express": "^5.2.1",
+        "mongoose": "^9.9.4"
+    }
+}
