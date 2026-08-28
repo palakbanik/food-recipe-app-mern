@@ -1,9 +1,9 @@
-const Recipes = require("../models/recipe");
+const RecipeSchema = require("../models/recipeSchema");
 
 // get all recipes
 const getRecipes = async (req, res) => {
     try {
-        const recipes = await Recipes.find();
+        const recipes = await RecipeSchema.find();
 
         return res.status(200).json({
             message: "Fetched all recipes successfully.",
@@ -21,7 +21,7 @@ const getRecipes = async (req, res) => {
 // get single recipe
 const getRecipe = async (req, res) => {
     try {
-        const recipe = await Recipes.findById(req.params.id);
+        const recipe = await RecipeSchema.findById(req.params.id);
 
         if (!recipe) {
             return res.status(404).json({
@@ -52,7 +52,7 @@ const addRecipe = async (req, res) => {
             });
         }
 
-        const newRecipe = await Recipes.create({
+        const newRecipe = await RecipeSchema.create({
             title,
             ingredients,
             instructions,
@@ -74,10 +74,10 @@ const addRecipe = async (req, res) => {
 // update/edit recipe
 const editRecipe = async (req, res) => {
     try {
-        const updatedRecipe = await Recipes.findByIdAndUpdate(
+        const updatedRecipe = await RecipeSchema.findByIdAndUpdate(
             req.params.id,
             req.body,
-            { new: true, runValidators: true },
+            { new: true, runValidators: true, returnDocument: "after" },
         );
 
         if (!updatedRecipe) {
