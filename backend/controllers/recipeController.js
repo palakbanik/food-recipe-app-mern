@@ -2,43 +2,103 @@ const Recipes = require("../models/recipe");
 
 // get all recipes
 const getRecipes = async (req, res) => {
-    const recipes = await Recipes.find();
+    try {
+        const recipes = await Recipes.find();
 
-    return res.json(recipes);
+        return res.status(200).json({
+            message: "Fetched all recipes successfully.",
+            recipes,
+        });
+    } catch (err) {
+        console.error(err);
+
+        return res.status(500).json({
+            error: "There was an issue fetching recipes.",
+        });
+    }
 };
 
 // get single recipe
-const getRecipe = (req, res) => {
-    res.json({
-        message: "Hello from RECIPE",
-    });
+const getRecipe = async (req, res) => {
+    try {
+        const recipe = await Recipes.findById(req.params.id);
+
+        if (!recipe) {
+            return res.status(404).json({
+                message: "Recipe not found.",
+            });
+        }
+
+        return res.status(200).json({
+            message: "Single recipe fetched successfully.",
+            recipe,
+        });
+    } catch (err) {
+        console.error(err);
+        return res.status(500).json({
+            error: "There was an issue fetching the recipe.",
+        });
+    }
 };
 
 // add recipe
 const addRecipe = async (req, res) => {
-    const { title, ingredients, instructions, time } = req.body;
+    try {
+        const { title, ingredients, instructions, time } = req.body;
 
-    if (!title || !ingredients || !instructions) {
-        res.json({
-            message: "Required filed can't be empty.",
+        if (!title || !ingredients || !instructions) {
+            return res.status(400).json({
+                message: "Required field can't be empty.",
+            });
+        }
+
+        const newRecipe = await Recipes.create({
+            title,
+            ingredients,
+            instructions,
+            time,
+        });
+
+        return res.status(201).json({
+            message: "recipe added successfully.",
+            newRecipe,
+        });
+    } catch (err) {
+        console.error(err);
+        res.status(500).json({
+            error: "There was a recipe add issue.",
         });
     }
-
-    const newRecipe = await Recipes({
-        title,
-        ingredients,
-        instructions,
-        time,
-    });
-
-    return res.json(newRecipe);
 };
 
 // update/edit recipe
-const editRecipe = (req, res) => {
-    res.json({
-        message: "Hello from RECIPE",
-    });
+const editRecipe = async (req, res) => {
+    try {
+        const updatedRecipe = await Recipes.findByIdAndUpdate(
+            req.params.id,
+            req.body,
+            { new: true, runValidators: true },
+        );
+
+        if (!updatedRecipe) {
+            return res.status(404).json({
+                message: "Recipe not found.",
+            });
+        }
+
+        return res.status(200).json({
+            message: "Recipe updated successfully.",
+            recipe: updatedRecipe,
+        });
+    } catch (err) {
+        console.error(err);
+        if (err.name === "CastError") {
+            return res.status(400).json({ error: "Invalid recipe ID." });
+        }
+        return res.status(500).json({
+            error: "There was an issue updating the recipe.",
+        });
+    }
 };
 
 // delete recipe
