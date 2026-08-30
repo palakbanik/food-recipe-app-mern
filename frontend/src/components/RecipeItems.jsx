@@ -1,7 +1,6 @@
 import { useLoaderData } from "react-router-dom";
 import { BsStopwatchFill } from "react-icons/bs";
 import { IoMdHeart } from "react-icons/io";
-import tomatoMozzarella from "../assets/tomato_mozzarella.jpg";
 import { useState } from "react";
 
 export default function RecipeItems() {
@@ -15,7 +14,7 @@ export default function RecipeItems() {
                 return (
                     <div key={index} className="card">
                         <img
-                            src={tomatoMozzarella}
+                            src={`http://localhost:5000/images/${item.coverImage}`}
                             width="120px"
                             height="100px"
                         ></img>
@@ -24,7 +23,7 @@ export default function RecipeItems() {
                             <div className="icons">
                                 <div className="timer">
                                     <BsStopwatchFill />
-                                    30 mins
+                                    {item.time ? item.time : "N/A"}
                                 </div>
 
                                 <IoMdHeart />
