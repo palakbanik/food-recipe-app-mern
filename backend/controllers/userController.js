@@ -47,7 +47,7 @@ const userSignUp = async (req, res) => {
 
         return res.status(201).json({
             token,
-            newUser,
+            user: newUser,
         });
     } catch (err) {
         console.error("Sign Up Error: ", err);
@@ -83,7 +83,7 @@ const userLogin = async (req, res) => {
             });
         } else {
             return res.status(400).json({
-                message: "Invalid credentials, please try again.",
+                error: "Invalid credentials, please try again.",
             });
         }
     } catch (err) {
