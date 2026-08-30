@@ -1,7 +1,9 @@
+import { useNavigate } from "react-router-dom";
 import fourCheeseGnocchi from "../assets/four-cheese-gnocchi.jpg";
 import RecipeItems from "../components/RecipeItems";
 
 export default function Home() {
+    const navigate = useNavigate();
     return (
         <>
             <section className="home">
@@ -15,7 +17,9 @@ export default function Home() {
                         letters, as opposed to using 'Content here, content
                         here', making it look like readable English.
                     </article>
-                    <button>Share your recipe</button>
+                    <button onClick={() => navigate("/add-recipe")}>
+                        Share your recipe
+                    </button>
                 </div>
                 <div className="right">
                     <img
